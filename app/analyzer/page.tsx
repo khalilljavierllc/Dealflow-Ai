@@ -73,16 +73,21 @@ export default function AnalyzerPage() {
     )
   }
 
-  return (
+   return (
     <div>
-  <PageHeader
-  eyebrow="UNDERWRITE"
-  title="Deal Analyzer"
-  subtitle="Run any property through the underwriting model — no lead required"
+  return (
+  <div>
+    <PageHeader
+      eyebrow="UNDERWRITE"
+      title="Deal Analyzer"
+      subtitle="Run any property through the underwriting model — no lead required"
+    />
+
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,420px)_1fr]">
+
 />
-        title="Deal Analyzer"
-        subtitle="Run any property through the underwriting model — no lead required"
-      />
+        
+    
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,420px)_1fr]">
         <Card>
