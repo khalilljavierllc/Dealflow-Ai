@@ -40,6 +40,7 @@ export default function BuyersPage() {
         if (l.stage === "closed") return false
 
         const offer = l.analysis?.maxOffer ?? 0
+
         const inBudget =
           offer >= b.minBudget && offer <= b.maxBudget
 
@@ -77,9 +78,7 @@ export default function BuyersPage() {
         }
       />
 
-      {isSample ? (
-        <SampleBanner message="Showing sample buyers. Add your first buyer to start matching deals." />
-      ) : null}
+      {isSample ? <SampleBanner /> : null}
 
       {showForm && !isSample ? (
         <AddBuyerForm
