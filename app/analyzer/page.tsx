@@ -72,10 +72,10 @@ export default function AnalyzerPage() {
       prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
     )
   }
-
-   return (
-    <div>
-  return (
+ 
+  
+  
+return (
   <div>
     <PageHeader
       eyebrow="UNDERWRITE"
@@ -83,6 +83,7 @@ export default function AnalyzerPage() {
       subtitle="Run any property through the underwriting model — no lead required"
     />
 
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,420px)_1fr]">
     <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,420px)_1fr]">
 
 />
