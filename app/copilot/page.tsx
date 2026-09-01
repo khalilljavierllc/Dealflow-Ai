@@ -31,24 +31,35 @@ export default function CopilotPage() {
   )
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight })
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    })
   }, [messages])
 
   function send(text: string) {
     const q = text.trim()
+
     if (!q) return
+
     const reply = buildCopilotReply(q, leads)
+
     setMessages((m) => [
       ...m,
       { role: "user", content: q },
       { role: "assistant", content: reply },
     ])
+
     setInput("")
   }
 
   return (
-    <div className="flex flex-col" style={{ height: "calc(100vh - 3rem)" }}>
+    <div
+      className="flex flex-col"
+      style={{ height: "calc(100vh - 3rem)" }}
+    >
       <PageHeader
+        eyebrow="AI COPILOT"
         title="AI Copilot"
         subtitle="Ask questions about your deals in plain English"
       />
@@ -59,6 +70,7 @@ export default function CopilotPage() {
       >
         <div className="flex gap-3">
           <Avatar />
+
           <div className="max-w-[80%] rounded-2xl rounded-tl-sm border border-line bg-panel px-4 py-3 text-sm leading-relaxed">
             {greeting}
           </div>
@@ -74,6 +86,7 @@ export default function CopilotPage() {
           ) : (
             <div key={i} className="flex gap-3">
               <Avatar />
+
               <div className="max-w-[80%] whitespace-pre-wrap rounded-2xl rounded-tl-sm border border-line bg-panel px-4 py-3 text-sm leading-relaxed">
                 {m.content}
               </div>
@@ -86,6 +99,7 @@ export default function CopilotPage() {
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
+                type="button"
                 onClick={() => send(s)}
                 className="rounded-full border border-line bg-panel-2 px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-primary/50 hover:text-foreground"
               >
@@ -109,13 +123,20 @@ export default function CopilotPage() {
           placeholder="Ask about your pipeline..."
           className="flex-1 rounded-xl border border-line bg-panel px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
-        <Button variant="primary" type="submit" aria-label="Send">
+
+        <Button
+          variant="primary"
+          type="submit"
+          aria-label="Send"
+        >
           <Send size={16} />
         </Button>
       </form>
+
       <p className="mt-2 text-center text-[11px] text-muted-foreground">
-        Answers are generated from your local deal data using a rule-based model.
-        Connect an LLM via <code className="text-muted">/api/analyze</code> for
+        Answers are generated from your local deal data using a
+        rule-based model. Connect an LLM via{" "}
+        <code className="text-muted">/api/analyze</code> for
         free-form reasoning.
       </p>
     </div>
