@@ -25,7 +25,11 @@ export default function PipelinePage() {
       contract: [],
       closed: [],
     }
-    for (const lead of leads) map[lead.stage]?.push(lead)
+
+    for (const lead of leads) {
+      map[lead.stage]?.push(lead)
+    }
+
     return map
   }, [leads])
 
@@ -34,21 +38,27 @@ export default function PipelinePage() {
       toast("Add a real lead to manage your pipeline", "error")
       return
     }
+
     setStage(id, stage)
+
     const label = STAGES.find((s) => s.id === stage)?.label ?? stage
     toast(`Moved to ${label}`, "success")
   }
 
   const pipelineValue = leads
     .filter((l) => l.stage !== "closed")
-    .reduce((sum, l) => sum + (l.analysis?.assignmentFee ?? 0), 0)
+    .reduce(
+      (sum, l) => sum + (l.analysis?.assignmentFee ?? 0),
+      0
+    )
 
   return (
     <div>
       <PageHeader
+        eyebrow="PIPELINE"
         title="Pipeline"
         subtitle="Drag deals across stages to track progress"
-        meta={
+        actions={
           <span className="text-sm text-muted">
             Projected fees in play{" "}
             <span className="font-bold text-accent">
@@ -57,14 +67,19 @@ export default function PipelinePage() {
           </span>
         }
       />
+
       {isSample ? <SampleBanner /> : null}
 
       {hydrated && leads.length === 0 ? (
-        <EmptyState title="No deals yet" description="Add a lead to start building your pipeline." />
+        <EmptyState
+          title="No deals yet"
+          description="Add a lead to start building your pipeline."
+        />
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
           {STAGES.map((stage) => {
             const items = byStage[stage.id]
+
             return (
               <section
                 key={stage.id}
@@ -72,7 +87,10 @@ export default function PipelinePage() {
                   e.preventDefault()
                 }}
                 onDrop={() => {
-                  if (dragId) moveTo(dragId, stage.id)
+                  if (dragId) {
+                    moveTo(dragId, stage.id)
+                  }
+
                   setDragId(null)
                 }}
                 className="flex flex-col rounded-xl border border-line bg-panel/60"
@@ -81,10 +99,12 @@ export default function PipelinePage() {
                   <span className="text-xs font-bold uppercase tracking-wide text-muted">
                     {stage.label}
                   </span>
+
                   <span className="rounded-full bg-elevated px-2 py-0.5 text-[10px] font-bold text-muted">
                     {items.length}
                   </span>
                 </header>
+
                 <div className="flex min-h-24 flex-1 flex-col gap-2 p-2">
                   {items.map((lead) => (
                     <button
@@ -101,20 +121,31 @@ export default function PipelinePage() {
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-elevated text-[10px] font-bold text-primary">
                             {initials(lead.sellerName)}
                           </span>
-                          <span className="truncate">{lead.sellerName}</span>
+
+                          <span className="truncate">
+                            {lead.sellerName}
+                          </span>
                         </span>
+
                         <Badge tone={tempTone[lead.temperature]}>
                           {lead.analysis?.score ?? "-"}
                         </Badge>
                       </div>
+
                       <p className="mt-1.5 truncate text-xs text-muted">
                         {lead.address}
                       </p>
+
                       <p className="mt-2 text-xs font-bold text-accent">
-                        {formatCurrency(lead.analysis?.assignmentFee, true)} fee
+                        {formatCurrency(
+                          lead.analysis?.assignmentFee,
+                          true
+                        )}{" "}
+                        fee
                       </p>
                     </button>
                   ))}
+
                   {items.length === 0 ? (
                     <p className="px-1 py-3 text-center text-[11px] text-muted-foreground">
                       Drop here
