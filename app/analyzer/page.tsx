@@ -12,7 +12,10 @@ import {
   type DealAnalysis,
 } from "@/lib/types"
 
-const CONDITIONS: { id: NonNullable<AnalyzerInput["condition"]>; label: string }[] = [
+const CONDITIONS: {
+  id: NonNullable<AnalyzerInput["condition"]>
+  label: string
+}[] = [
   { id: "turnkey", label: "Turnkey" },
   { id: "light", label: "Light" },
   { id: "moderate", label: "Moderate" },
@@ -20,7 +23,10 @@ const CONDITIONS: { id: NonNullable<AnalyzerInput["condition"]>; label: string }
   { id: "teardown", label: "Teardown" },
 ]
 
-const TIMELINES: { id: NonNullable<AnalyzerInput["timeline"]>; label: string }[] = [
+const TIMELINES: {
+  id: NonNullable<AnalyzerInput["timeline"]>
+  label: string
+}[] = [
   { id: "asap", label: "ASAP" },
   { id: "30days", label: "30 days" },
   { id: "90days", label: "90 days" },
@@ -58,6 +64,7 @@ export default function AnalyzerPage() {
       timeline: form.timeline,
       motivationSignals: signals,
     })
+
     setResult(analysis)
   }
 
@@ -69,30 +76,26 @@ export default function AnalyzerPage() {
 
   function toggleSignal(s: string) {
     setSignals((prev) =>
-      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
+      prev.includes(s)
+        ? prev.filter((x) => x !== s)
+        : [...prev, s],
     )
   }
- 
-  
-  
-return (
-  <div>
-    <PageHeader
-      eyebrow="UNDERWRITE"
-      title="Deal Analyzer"
-      subtitle="Run any property through the underwriting model — no lead required"
-    />
 
-    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,420px)_1fr]">
-    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,420px)_1fr]">
-
-/>
-        
-    
+  return (
+    <div>
+      <PageHeader
+        eyebrow="UNDERWRITE"
+        title="Deal Analyzer"
+        subtitle="Run any property through the underwriting model — no lead required"
+      />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,420px)_1fr]">
         <Card>
-          <CardTitle hint="70% rule + motivation">Property inputs</CardTitle>
+          <CardTitle hint="70% rule + motivation">
+            Property inputs
+          </CardTitle>
+
           <div className="grid grid-cols-2 gap-3">
             <Field label="Est. ARV ($)">
               <input
@@ -100,9 +103,12 @@ return (
                 className={inputClass}
                 placeholder="285000"
                 value={form.arv}
-                onChange={(e) => setForm({ ...form, arv: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, arv: e.target.value })
+                }
               />
             </Field>
+
             <Field label="Asking price ($)">
               <input
                 inputMode="numeric"
@@ -110,28 +116,41 @@ return (
                 placeholder="180000"
                 value={form.askingPrice}
                 onChange={(e) =>
-                  setForm({ ...form, askingPrice: e.target.value })
+                  setForm({
+                    ...form,
+                    askingPrice: e.target.value,
+                  })
                 }
               />
             </Field>
+
             <Field label="Square feet">
               <input
                 inputMode="numeric"
                 className={inputClass}
                 placeholder="1450"
                 value={form.sqft}
-                onChange={(e) => setForm({ ...form, sqft: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, sqft: e.target.value })
+                }
               />
             </Field>
+
             <Field label="Known repairs ($)" hint="optional">
               <input
                 inputMode="numeric"
                 className={inputClass}
                 placeholder="auto"
                 value={form.repairs}
-                onChange={(e) => setForm({ ...form, repairs: e.target.value })}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    repairs: e.target.value,
+                  })
+                }
               />
             </Field>
+
             <Field label="Target fee ($)">
               <input
                 inputMode="numeric"
@@ -139,20 +158,31 @@ return (
                 placeholder="15000"
                 value={form.targetFee}
                 onChange={(e) =>
-                  setForm({ ...form, targetFee: e.target.value })
+                  setForm({
+                    ...form,
+                    targetFee: e.target.value,
+                  })
                 }
               />
             </Field>
           </div>
 
           <div className="mt-4">
-            <p className="mb-1.5 text-[11px] font-medium text-muted">Condition</p>
+            <p className="mb-1.5 text-[11px] font-medium text-muted">
+              Condition
+            </p>
+
             <div className="flex flex-wrap gap-1.5">
               {CONDITIONS.map((c) => (
                 <Chip
                   key={c.id}
                   active={form.condition === c.id}
-                  onClick={() => setForm({ ...form, condition: c.id })}
+                  onClick={() =>
+                    setForm({
+                      ...form,
+                      condition: c.id,
+                    })
+                  }
                 >
                   {c.label}
                 </Chip>
@@ -161,13 +191,21 @@ return (
           </div>
 
           <div className="mt-4">
-            <p className="mb-1.5 text-[11px] font-medium text-muted">Timeline</p>
+            <p className="mb-1.5 text-[11px] font-medium text-muted">
+              Timeline
+            </p>
+
             <div className="flex flex-wrap gap-1.5">
               {TIMELINES.map((t) => (
                 <Chip
                   key={t.id}
                   active={form.timeline === t.id}
-                  onClick={() => setForm({ ...form, timeline: t.id })}
+                  onClick={() =>
+                    setForm({
+                      ...form,
+                      timeline: t.id,
+                    })
+                  }
                 >
                   {t.label}
                 </Chip>
@@ -179,6 +217,7 @@ return (
             <p className="mb-1.5 text-[11px] font-medium text-muted">
               Motivation signals
             </p>
+
             <div className="flex flex-wrap gap-1.5">
               {MOTIVATION_SIGNALS.map((s) => (
                 <Chip
@@ -193,11 +232,20 @@ return (
           </div>
 
           <div className="mt-5 flex gap-2">
-            <Button variant="primary" className="flex-1" onClick={run}>
+            <Button
+              variant="primary"
+              className="flex-1"
+              onClick={run}
+            >
               <Calculator size={16} />
               Analyze deal
             </Button>
-            <Button variant="ghost" onClick={reset} aria-label="Reset">
+
+            <Button
+              variant="ghost"
+              onClick={reset}
+              aria-label="Reset"
+            >
               <RotateCcw size={16} />
             </Button>
           </div>
@@ -211,10 +259,14 @@ return (
               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-elevated text-primary">
                 <Calculator size={22} />
               </div>
-              <p className="font-semibold">Enter property details</p>
+
+              <p className="font-semibold">
+                Enter property details
+              </p>
+
               <p className="mt-1 max-w-xs text-sm text-muted">
-                Fill in the ARV and condition, then run the analyzer to see your
-                max offer, spread and deal score.
+                Fill in the ARV and condition, then run the analyzer
+                to see your max offer, spread and deal score.
               </p>
             </Card>
           )}
