@@ -32,14 +32,17 @@ export default function BuyersPage() {
   const { toast } = useUI()
   const [showForm, setShowForm] = useState(false)
 
-  // Count how many active deals fit each buyer's box (budget by max offer + market).
   const matches = useMemo(() => {
     const map: Record<string, number> = {}
+
     for (const b of buyers) {
       map[b.id] = leads.filter((l) => {
         if (l.stage === "closed") return false
+
         const offer = l.analysis?.maxOffer ?? 0
-        const inBudget = offer >= b.minBudget && offer <= b.maxBudget
+        const inBudget =
+          offer >= b.minBudget && offer <= b.maxBudget
+
         const inMarket =
           b.markets.length === 0 ||
           b.markets.some(
@@ -48,15 +51,18 @@ export default function BuyersPage() {
               m.toLowerCase().includes(l.state.toLowerCase()) ||
               l.city.toLowerCase().includes(m.toLowerCase()),
           )
+
         return inBudget && inMarket
       }).length
     }
+
     return map
   }, [buyers, leads])
 
   return (
     <div>
       <PageHeader
+        eyebrow="BUYERS"
         title="Buyers Network"
         subtitle="Match your deals to cash buyers by budget and market"
         actions={
@@ -70,6 +76,7 @@ export default function BuyersPage() {
           </Button>
         }
       />
+
       {isSample ? (
         <SampleBanner message="Showing sample buyers. Add your first buyer to start matching deals." />
       ) : null}
@@ -90,7 +97,10 @@ export default function BuyersPage() {
           title="No buyers yet"
           description="Add cash buyers with their budget and target markets to auto-match deals."
           action={
-            <Button variant="primary" onClick={() => setShowForm(true)}>
+            <Button
+              variant="primary"
+              onClick={() => setShowForm(true)}
+            >
               <Plus size={16} />
               Add your first buyer
             </Button>
@@ -105,18 +115,22 @@ export default function BuyersPage() {
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-elevated text-sm font-bold text-primary">
                     {initials(b.name)}
                   </span>
+
                   <div>
                     <p className="font-semibold">{b.name}</p>
                     <p className="text-xs capitalize text-muted">
-                      {STRATEGIES.find((s) => s.id === b.strategy)?.label ??
-                        b.strategy}
+                      {STRATEGIES.find(
+                        (s) => s.id === b.strategy,
+                      )?.label ?? b.strategy}
                     </p>
                   </div>
                 </div>
+
                 {matches[b.id] > 0 ? (
                   <Badge tone="success">
                     <Target size={11} className="mr-1" />
-                    {matches[b.id]} match{matches[b.id] > 1 ? "es" : ""}
+                    {matches[b.id]} match
+                    {matches[b.id] > 1 ? "es" : ""}
                   </Badge>
                 ) : null}
               </div>
@@ -129,6 +143,7 @@ export default function BuyersPage() {
                     {formatCurrency(b.maxBudget, true)}
                   </dd>
                 </div>
+
                 <div className="flex justify-between gap-4">
                   <dt className="text-muted">Markets</dt>
                   <dd className="text-right font-medium">
@@ -168,25 +183,30 @@ function AddBuyerForm({
   const [markets, setMarkets] = useState("")
   const [minBudget, setMinBudget] = useState("")
   const [maxBudget, setMaxBudget] = useState("")
-  const [strategy, setStrategy] = useState<Buyer["strategy"]>("flip")
+  const [strategy, setStrategy] =
+    useState<Buyer["strategy"]>("flip")
   const [types, setTypes] = useState("")
 
   function save() {
     if (!name.trim()) return
+
     addBuyer({
       name: name.trim(),
       markets: markets
         .split(",")
         .map((m) => m.trim())
         .filter(Boolean),
-      minBudget: Number(minBudget.replace(/[^0-9]/g, "")) || 0,
-      maxBudget: Number(maxBudget.replace(/[^0-9]/g, "")) || 0,
+      minBudget:
+        Number(minBudget.replace(/[^0-9]/g, "")) || 0,
+      maxBudget:
+        Number(maxBudget.replace(/[^0-9]/g, "")) || 0,
       strategy,
       propertyTypes: types
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean),
     })
+
     onSaved(name.trim())
   }
 
@@ -194,7 +214,9 @@ function AddBuyerForm({
     <Card className="mb-5 border-primary/30">
       <div className="mb-4 flex items-center justify-between">
         <CardTitle>New buyer</CardTitle>
+
         <button
+          type="button"
           onClick={onClose}
           className="text-muted hover:text-foreground"
           aria-label="Close"
@@ -202,8 +224,12 @@ function AddBuyerForm({
           <X size={18} />
         </button>
       </div>
+
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <Field label="Buyer name" className="sm:col-span-2">
+        <Field
+          label="Buyer name"
+          className="sm:col-span-2"
+        >
           <input
             className={inputClass}
             placeholder="Sunbelt Capital"
@@ -211,6 +237,7 @@ function AddBuyerForm({
             onChange={(e) => setName(e.target.value)}
           />
         </Field>
+
         <Field label="Min budget ($)">
           <input
             inputMode="numeric"
@@ -220,6 +247,7 @@ function AddBuyerForm({
             onChange={(e) => setMinBudget(e.target.value)}
           />
         </Field>
+
         <Field label="Max budget ($)">
           <input
             inputMode="numeric"
@@ -229,7 +257,12 @@ function AddBuyerForm({
             onChange={(e) => setMaxBudget(e.target.value)}
           />
         </Field>
-        <Field label="Target markets" hint="comma separated" className="sm:col-span-2">
+
+        <Field
+          label="Target markets"
+          hint="comma separated"
+          className="sm:col-span-2"
+        >
           <input
             className={inputClass}
             placeholder="Dallas TX, Fort Worth TX"
@@ -237,7 +270,12 @@ function AddBuyerForm({
             onChange={(e) => setMarkets(e.target.value)}
           />
         </Field>
-        <Field label="Property types" hint="comma separated" className="sm:col-span-2">
+
+        <Field
+          label="Property types"
+          hint="comma separated"
+          className="sm:col-span-2"
+        >
           <input
             className={inputClass}
             placeholder="Single family, Duplex"
@@ -248,7 +286,10 @@ function AddBuyerForm({
       </div>
 
       <div className="mt-4">
-        <p className="mb-1.5 text-[11px] font-medium text-muted">Strategy</p>
+        <p className="mb-1.5 text-[11px] font-medium text-muted">
+          Strategy
+        </p>
+
         <div className="flex flex-wrap gap-1.5">
           {STRATEGIES.map((s) => (
             <button
@@ -271,7 +312,12 @@ function AddBuyerForm({
         <Button variant="ghost" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={save} disabled={!name.trim()}>
+
+        <Button
+          variant="primary"
+          onClick={save}
+          disabled={!name.trim()}
+        >
           Save buyer
         </Button>
       </div>
