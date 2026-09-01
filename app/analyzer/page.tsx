@@ -75,7 +75,11 @@ export default function AnalyzerPage() {
 
   return (
     <div>
-      <PageHeader
+  <PageHeader
+  eyebrow="UNDERWRITE"
+  title="Deal Analyzer"
+  subtitle="Run any property through the underwriting model — no lead required"
+/>
         title="Deal Analyzer"
         subtitle="Run any property through the underwriting model — no lead required"
       />
